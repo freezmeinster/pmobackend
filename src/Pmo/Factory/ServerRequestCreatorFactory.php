@@ -1,8 +1,7 @@
 <?php
 /**
- * Pmo Framework (https://slimframework.com)
+ * Pmo Framework (https://)
  *
- * @license https://github.com/slimphp/Pmo/blob/4.x/LICENSE.md (MIT License)
  */
 
 declare(strict_types=1);
@@ -31,7 +30,7 @@ class ServerRequestCreatorFactory
     /**
      * @var bool
      */
-    protected static $slimHttpDecoratorsAutomaticDetectionEnabled = true;
+    protected static $pmoHttpDecoratorsAutomaticDetectionEnabled = true;
 
     /**
      * @return ServerRequestCreatorInterface
@@ -65,7 +64,7 @@ class ServerRequestCreatorFactory
             "Could not detect any ServerRequest creator implementations. " .
             "Please install a supported implementation in order to use `App::run()` " .
             "without having to pass in a `ServerRequest` object. " .
-            "See https://github.com/slimphp/Pmo/blob/4.x/README.md for a list of supported implementations."
+""
         );
     }
 
@@ -76,7 +75,7 @@ class ServerRequestCreatorFactory
     protected static function attemptServerRequestCreatorDecoration(
         ServerRequestCreatorInterface $serverRequestCreator
     ): ServerRequestCreatorInterface {
-        if (static::$slimHttpDecoratorsAutomaticDetectionEnabled
+        if (static::$pmoHttpDecoratorsAutomaticDetectionEnabled
             && PmoHttpServerRequestCreator::isServerRequestDecoratorAvailable()
         ) {
             return new PmoHttpServerRequestCreator($serverRequestCreator);
@@ -106,6 +105,6 @@ class ServerRequestCreatorFactory
      */
     public static function setPmoHttpDecoratorsAutomaticDetection(bool $enabled): void
     {
-        static::$slimHttpDecoratorsAutomaticDetectionEnabled = $enabled;
+        static::$pmoHttpDecoratorsAutomaticDetectionEnabled = $enabled;
     }
 }

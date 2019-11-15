@@ -1,8 +1,7 @@
 <?php
 /**
- * Pmo Framework (https://slimframework.com)
+ * Pmo Framework (https://)
  *
- * @license https://github.com/slimphp/Pmo/blob/4.x/LICENSE.md (MIT License)
  */
 
 declare(strict_types=1);
@@ -68,7 +67,7 @@ class AppFactory
     /**
      * @var bool
      */
-    protected static $slimHttpDecoratorsAutomaticDetectionEnabled = true;
+    protected static $pmoHttpDecoratorsAutomaticDetectionEnabled = true;
 
     /**
      * @param ResponseFactoryInterface|null         $responseFactory
@@ -166,7 +165,7 @@ class AppFactory
         throw new RuntimeException(
             "Could not detect any PSR-17 ResponseFactory implementations. " .
             "Please install a supported implementation in order to use `AppFactory::create()`. " .
-            "See https://github.com/slimphp/Pmo/blob/4.x/README.md for a list of supported implementations."
+""
         );
     }
 
@@ -179,7 +178,7 @@ class AppFactory
         ResponseFactoryInterface $responseFactory,
         StreamFactoryInterface $streamFactory
     ): ResponseFactoryInterface {
-        if (static::$slimHttpDecoratorsAutomaticDetectionEnabled
+        if (static::$pmoHttpDecoratorsAutomaticDetectionEnabled
             && PmoHttpPsr17Factory::isResponseFactoryAvailable()
         ) {
             return PmoHttpPsr17Factory::createDecoratedResponseFactory($responseFactory, $streamFactory);
@@ -257,6 +256,6 @@ class AppFactory
      */
     public static function setPmoHttpDecoratorsAutomaticDetection(bool $enabled): void
     {
-        static::$slimHttpDecoratorsAutomaticDetectionEnabled = $enabled;
+        static::$pmoHttpDecoratorsAutomaticDetectionEnabled = $enabled;
     }
 }
