@@ -1,0 +1,14 @@
+{
+    "name": "pmo/backend",
+    "description": "Sebuah Backend",
+    "type": "project",
+    "require": {
+        "php-di/php-di": "^6.0",
+        "relay/relay": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Pmo\\": "src/"
+        }
+    }
+}
