@@ -1,0 +1,44 @@
+<?php
+/**
+ * Pmo Framework (https://slimframework.com)
+ *
+ * @license https://github.com/slimphp/Pmo/blob/4.x/LICENSE.md (MIT License)
+ */
+
+declare(strict_types=1);
+
+namespace Pmo\Middleware;
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+
+class MethodOverrideMiddleware implements MiddlewareInterface
+{
+    /**
+     * @param ServerRequestInterface  $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
+     */
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        $methodHeader = $request->getHeaderLine('X-Http-Method-Override');
+
+        if ($methodHeader) {
+            $request = $request->withMethod($methodHeader);
+        } elseif (strtoupper($request->getMethod()) === 'POST') {
+            $body = $request->getParsedBody();
+
+            if (is_array($body) && !empty($body['_METHOD'])) {
+                $request = $request->withMethod($body['_METHOD']);
+            }
+
+            if ($request->getBody()->eof()) {
+                $request->getBody()->rewind();
+            }
+        }
+
+        return $handler->handle($request);
+    }
+}

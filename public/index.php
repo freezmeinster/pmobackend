@@ -1,20 +1,26 @@
 <?php
-declare(strict_types=1);
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Pmo\Factory\AppFactory;
 
-use DI\ContainerBuilder;
-use Pmo\HelloWorld;
-use function DI\create;
+require __DIR__ . '/../vendor/autoload.php';
 
-require_once dirname(__DIR__) . '/vendor/autoload.php';
+// Instantiate App
+$app = AppFactory::create();
 
-$containerBuilder = new ContainerBuilder();
-$containerBuilder->useAutowiring(false);
-$containerBuilder->useAnnotations(false);
-$containerBuilder->addDefinitions([
-	HelloWorld::class => create(HelloWorld::class)
-]);
+// Add error middleware
+$app->addErrorMiddleware(true, true, true);
 
-$container = $containerBuilder->build();
+// Add routes
+$app->get('/', function (Request $request, Response $response) {
+    $response->getBody()->write('<a href="/hello/world">Try /hello/world</a>');
+    return $response;
+});
 
-$helloWorld = $container->get(HelloWorld::class);
-$helloWorld->announce();
+$app->get('/hello/{name}', function (Request $request, Response $response, $args) {
+    $name = $args['name'];
+    $response->getBody()->write("Hello, $name");
+    return $response;
+});
+
+$app->run();
